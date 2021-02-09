@@ -7,6 +7,9 @@ import pandas as pd
 class FunctionInterpolationApproximator(object):
 
     def __init__(self, racines, extrema, domaine,step = 0.05):
+        if [0,0] in extrema:
+            if 0 in racines:
+                racines.remove(0)
         self.domaine = np.arange(domaine[0], domaine[1]+step, step)
         self.racines = racines
         self.extrema = extrema
@@ -20,7 +23,9 @@ class FunctionInterpolationApproximator(object):
                     pente = (s_e[i + 1][1] - s_e[i][1]) / (s_e[i + 1][0] - s_e[i][0])
                     left = float(r - s_e[i][0])
                     right = float(s_e[i + 1][0] - r)
-                    if left > right:
+                    if left == 0 or right == 0:
+                        factor = 0
+                    elif left > right:
                         factor = left / right
                     else:
                         factor = right / left
